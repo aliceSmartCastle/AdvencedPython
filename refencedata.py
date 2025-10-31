@@ -1,7 +1,9 @@
 import copy
+import ctypes
+import gc
 from dataclasses import dataclass
 from enum import Enum, auto
-
+from typing import Union
 from tyingCheck import tyingParameter
 
 
@@ -14,16 +16,18 @@ class ParameterName(Enum):
 class IntegerValue(tyingParameter):
 
     def __set__(self, instance, value):
-        if not isinstance(value, int):
-            raise TypeError("value must the integer") from None
-        else:
+        if value is None:
+            return None
+        if isinstance(value, int):
             instance.__dict__[self.parameter] = value
             return value
+        else:
+            raise TypeError("value must the integer") from None
 
 
 @dataclass
 class WatchRefence:
-    integerData: int = IntegerValue()
+    integerData: Union[int, IntegerValue] = IntegerValue()
 
     def __post_init__(self):
         ...
@@ -37,23 +41,68 @@ class WatchRefence:
     def strId(self):
         return f"the id of the object is :{self.HiddenId()}"  # memory address
 
-    def __copy__(self):  #Shallow Copy
-        return WatchRefence(self.integerData)
+    def __copy__(self):
+        return WatchRefence(self.integerData)  #Shallow Copy
 
     def __deepcopy__(self, memo):
         return WatchRefence(copy.deepcopy(self.integerData, memo))
 
-    def parameterTuple(self, EnumName):
-        return tuple([EnumName, self.integerData, self.HiddenId()])
+    def parameterTuple(self, EnumName: ParameterName) -> tuple:
+        return tuple([EnumName.name, self.integerData, self.HiddenId()])
+
+    def AddressSame(self, other) -> None:
+        if self.HiddenId() == other.HiddenId():
+            print("this the same memery address")
+        else:
+            print("not in the same memary address")
+
+    def GetId(self) -> int:
+        return id(self)
+
+    @staticmethod
+    def refenceCounter(address: int) -> int:
+        return ctypes.c_long.from_address(address).value
+
+    @staticmethod
+    def OutCount(objectId: int) -> None:
+        print(f"the value refence count is :{WatchRefence.refenceCounter(objectId)}")
+    @staticmethod
+    def ObjectExit(objectId:int) -> bool:
+        for obj in gc.get_objects():
+            if id(obj) ==objectId:
+                return True
+        else:
+            return False
+
 
 
 if __name__ == "__main__":
-    alpha = WatchRefence(12)
-    print(alpha.parameterTuple(ParameterName.alpha.name))
-    alpha.integerData = 300
-    print(alpha.parameterTuple(ParameterName.alpha.name))
-    beta = copy.copy(alpha)                              #beta is reference of alpha
-    print(beta.parameterTuple(ParameterName.beta.name))
+    alpha= WatchRefence(12)
+    alphaData = alpha.parameterTuple(ParameterName.alpha)
+    beta = copy.copy(alpha)
+    #beta is reference of alpha
+    betaData = beta.parameterTuple(ParameterName.beta)
     gamma = copy.deepcopy(alpha)
-    print(gamma.parameterTuple(ParameterName.gamma.name))
-    print(gamma.parameterTuple(ParameterName.gamma.name)[2] == beta.parameterTuple(ParameterName.beta.name)[2])
+    gammaData = gamma.parameterTuple(ParameterName.gamma)
+    beta.AddressSame(gamma)
+    alpha.integerData = 300  #change the integerData value to 300,so it memery address is not same to initial
+    ParseAlpha = alpha.parameterTuple(ParameterName.alpha)
+    #refence counter block
+    VarRef = alpha.GetId()
+    betaRef=beta.GetId()
+    print(f"beta is exit? {WatchRefence.ObjectExit(betaRef)}")
+    AlphaRef = alpha  #refence value,not copy or deepcopy
+    refenceAlpha = AlphaRef.parameterTuple(ParameterName.alpha)
+    print(f"alpha is exit?{WatchRefence.ObjectExit(VarRef)}")
+    WatchRefence.OutCount(VarRef)  #2
+    alpha=None
+    WatchRefence.OutCount(VarRef)  #1
+    AlphaRef=None
+    WatchRefence.OutCount(VarRef)  #0
+    addressList = [alphaData, betaData, gammaData, ParseAlpha, refenceAlpha]
+    print(f"alpha is exit?{WatchRefence.ObjectExit(VarRef)}")
+    beta=None
+    print(f"beta is exit? {WatchRefence.ObjectExit(betaRef)}")
+    for i in addressList:
+        print(i)
+
