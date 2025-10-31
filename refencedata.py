@@ -1,5 +1,14 @@
+import copy
 from dataclasses import dataclass
+from enum import Enum, auto
+
 from tyingCheck import tyingParameter
+
+
+class ParameterName(Enum):
+    alpha = auto()
+    beta = auto()
+    gamma = auto()
 
 
 class IntegerValue(tyingParameter):
@@ -26,11 +35,25 @@ class WatchRefence:
         return hex(id(self.integerData))
 
     def strId(self):
-        return f"the id of the object is :{self.HiddenId()}"
+        return f"the id of the object is :{self.HiddenId()}"  # memory address
+
+    def __copy__(self):  #Shallow Copy
+        return WatchRefence(self.integerData)
+
+    def __deepcopy__(self, memo):
+        return WatchRefence(copy.deepcopy(self.integerData, memo))
+
+    def parameterTuple(self, EnumName):
+        return tuple([EnumName, self.integerData, self.HiddenId()])
 
 
 if __name__ == "__main__":
     alpha = WatchRefence(12)
-    print(alpha, alpha.strId(), sep='\n')
+    print(alpha.parameterTuple(ParameterName.alpha.name))
     alpha.integerData = 300
-    print(alpha, alpha.strId(), sep='\n')
+    print(alpha.parameterTuple(ParameterName.alpha.name))
+    beta = copy.copy(alpha)                              #beta is reference of alpha
+    print(beta.parameterTuple(ParameterName.beta.name))
+    gamma = copy.deepcopy(alpha)
+    print(gamma.parameterTuple(ParameterName.gamma.name))
+    print(gamma.parameterTuple(ParameterName.gamma.name)[2] == beta.parameterTuple(ParameterName.beta.name)[2])
