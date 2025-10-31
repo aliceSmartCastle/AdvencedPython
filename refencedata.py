@@ -1,9 +1,13 @@
 import copy
 import ctypes
 import gc
+import math
+import os
 from dataclasses import dataclass
 from enum import Enum, auto
 from typing import Union
+import psutil
+
 from tyingCheck import tyingParameter
 
 
@@ -29,7 +33,8 @@ class IntegerValue(tyingParameter):
 class WatchRefence:
     integerData: Union[int, IntegerValue] = IntegerValue()
 
-    def __post_init__(self):
+    @staticmethod
+    def __post_init__():
         ...
 
     def __str__(self):
@@ -66,18 +71,18 @@ class WatchRefence:
     @staticmethod
     def OutCount(objectId: int) -> None:
         print(f"the value refence count is :{WatchRefence.refenceCounter(objectId)}")
+
     @staticmethod
-    def ObjectExit(objectId:int) -> bool:
+    def ObjectExit(objectId: int) -> bool:
         for obj in gc.get_objects():
-            if id(obj) ==objectId:
+            if id(obj) == objectId:
                 return True
         else:
             return False
 
 
-
 if __name__ == "__main__":
-    alpha= WatchRefence(12)
+    alpha = WatchRefence(12)
     alphaData = alpha.parameterTuple(ParameterName.alpha)
     beta = copy.copy(alpha)
     #beta is reference of alpha
@@ -89,20 +94,24 @@ if __name__ == "__main__":
     ParseAlpha = alpha.parameterTuple(ParameterName.alpha)
     #refence counter block
     VarRef = alpha.GetId()
-    betaRef=beta.GetId()
+    betaRef = beta.GetId()
     print(f"beta is exit? {WatchRefence.ObjectExit(betaRef)}")
     AlphaRef = alpha  #refence value,not copy or deepcopy
     refenceAlpha = AlphaRef.parameterTuple(ParameterName.alpha)
     print(f"alpha is exit?{WatchRefence.ObjectExit(VarRef)}")
     WatchRefence.OutCount(VarRef)  #2
-    alpha=None
+    del alpha
     WatchRefence.OutCount(VarRef)  #1
-    AlphaRef=None
+    del AlphaRef
     WatchRefence.OutCount(VarRef)  #0
     addressList = [alphaData, betaData, gammaData, ParseAlpha, refenceAlpha]
+
     print(f"alpha is exit?{WatchRefence.ObjectExit(VarRef)}")
-    beta=None
+    del beta
     print(f"beta is exit? {WatchRefence.ObjectExit(betaRef)}")
     for i in addressList:
         print(i)
-
+    print(os.name)
+    processMemory = psutil.Process(os.getpid())
+    print(f"rss memory is {processMemory.memory_info().rss / (math.pow(1024, 2)):4f} Mb")
+    print(f"vms memory is {processMemory.memory_info().vms / (math.pow(1024, 2)):4f} Mb")
