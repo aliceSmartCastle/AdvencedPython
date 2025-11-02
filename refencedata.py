@@ -96,7 +96,7 @@ if __name__ == "__main__":
     beta.AddressSame(gamma)
     alpha.integerData = 300  #change the integerData value to 300,so it memery address is not same to initial
     ParseAlpha = alpha.parameterTuple(ParameterName.alpha)
-    #refence counter block
+    #references counter block
     VarRef = alpha.GetId()
     betaRef = beta.GetId()
     print(f"beta is exit? {WatchRefence.ObjectExit(betaRef)}")
