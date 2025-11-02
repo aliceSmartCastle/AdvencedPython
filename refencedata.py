@@ -82,6 +82,10 @@ class WatchRefence:
 
 
 if __name__ == "__main__":
+    #this the sample python memory control
+    #if the variable is none or del it,the gc of python
+    #reference value is reduce one,if value is the zero,
+    #it's recycle by the gc
     alpha = WatchRefence(12)
     alphaData = alpha.parameterTuple(ParameterName.alpha)
     beta = copy.copy(alpha)
