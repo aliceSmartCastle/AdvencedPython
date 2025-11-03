@@ -1,9 +1,10 @@
                                           
    # Abvenced python 
-   ## Heading 2
+                    This is copy idea is from 
+                    https://www.pythontutorial.net/advanced-python/all-tutorial/
+   ## Heading 
    ### Heading 3
-                   #This is copy idea is from 
-                   #https://www.pythontutorial.net/advanced-python/all-tutorial/
+                   
                                   ###the typingCheck.py 
 				  is class you create the new class to inheritance it
                                   to realize the anytype check of yourself                               
