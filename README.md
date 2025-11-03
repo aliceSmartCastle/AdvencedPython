@@ -12,7 +12,10 @@
 			                     destroy by python gc,it memory is release by python.     
  ## DecoratorsFunc.py   
                                  it's code for fourth Decorator 
- ### decorator CalculateAny()
+                                 decorator CalculateAny()
+								 it's output the function *arg,**kwarg 
+								 infomation and funcrion running cost the time
+								 No finish...
 				                                
 				              
                    
