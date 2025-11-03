@@ -1,4 +1,4 @@
-                                              <font size="7">Welocome!! <font size="7">
+                                              **Welocome!!** 
                    #This is copy idea is from 
                    #https://www.pythontutorial.net/advanced-python/all-tutorial/
                                   ###the typingCheck.py 
