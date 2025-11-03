@@ -1,4 +1,7 @@
                                               #Welocome!!
+											  # Heading 1
+   ## Heading 2
+   ### Heading 3
                    #This is copy idea is from 
                    #https://www.pythontutorial.net/advanced-python/all-tutorial/
                                   ###the typingCheck.py 
