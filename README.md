@@ -3,7 +3,7 @@
                     This is copy idea is from 
                     https://www.pythontutorial.net/advanced-python/all-tutorial/
    ## typingCheck.py
-    the python file of tyingParameter class you create the new class to inheritance it
+                                  the python file of tyingParameter class you create the new class to inheritance it
                                   to realize the anytype check of yourself
    ## refencedata.py
               it's the simple see the memeory handle of python!         
