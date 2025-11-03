@@ -1,4 +1,4 @@
-                                              **Welocome**!!
+                                              ****Welocome****!!
                    #This is copy idea is from 
                    #https://www.pythontutorial.net/advanced-python/all-tutorial/
                                   ###the typingCheck.py 
