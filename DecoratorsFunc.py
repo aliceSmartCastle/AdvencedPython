@@ -17,7 +17,7 @@ def wrapperDetail(*args, **kwargs):
 
     print(f"len:{len(args)}")
     for index, value in enumerate(range(len(args))):
-        print(f"(index:{index},value:{value})")
+        print(f"(index:{index},value:{args[value]})")
     print(f"dictKey:{list(kwargs.keys())}")
     print(f"dictVal:{list(kwargs.values())}")
 
@@ -31,7 +31,7 @@ def CalculateAny(argument: Any) -> Any:
         result = argument(*args, **kwargs)
         t0 = perf_counter()
         executeTime = t0 - t1
-        print(f"the running  time is:{executeTime:6f} ms")
+        print(f"the running time is:{executeTime:6f} ms")
         print(type(argument))
         wrapperDetail(*args, **kwargs)
         return result
@@ -72,7 +72,7 @@ def ascii_dict() -> Dict[str, int]:
     return asciiDict
 
 
-def funcHelp(func: Callable[[...], None]):
+def funcHelp(func: Callable[[None], None]):
     print('\n')
     help(func)
     print(f"the function name is:{func.__name__}")
@@ -86,17 +86,18 @@ def repeat(times: int, loop: bool = False) -> Any:
     def decorators(func: Callable[[Any], Any]) -> Any:
         @wraps(func)
         def wrapper(*args, **kwargs) -> Any:
-            global res
+            funcRes = None
             print(type(func))
             wrapperDetail(*args, **kwargs)
             if loop:
                 for _ in range(times):
                     res = func(*args, **kwargs)
+                    funcRes = res
             else:
                 print(times * '*')
-                res = func(*args, **kwargs)
+                funcRes = func(*args, **kwargs)
                 print(times * '*')
-            return res
+            return funcRes
 
         return wrapper
 
@@ -117,10 +118,10 @@ class DecoratorClass:
         self.StarTime = times
         self.loop = loop
 
-    def __call__(self, func: Callable[[Any], Any]) -> Any:
+    def __call__(self, func: Any) -> Any:
         @wraps(func)
         def wrapper(*args, **kwargs) -> Any:
-            global funcResult
+            funcResult = None
             print(type(self.StarTime))
             wrapperDetail(*args, **kwargs)
             if self.loop:
