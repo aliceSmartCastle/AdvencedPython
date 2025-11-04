@@ -1,8 +1,9 @@
 import math
 import os
-from timeit import timeit
-from typing import Any, Union, Callable, NoReturn, Dict
 from functools import wraps
+from time import perf_counter
+from typing import Any, Union, Callable, Dict
+
 import psutil
 
 
@@ -15,10 +16,10 @@ def wrapperDetail(*args, **kwargs):
     """
 
     print(f"len:{len(args)}")
-    for index, value in enumerate(range(len(args)), start=1):
+    for index, value in enumerate(range(len(args))):
         print(f"(index:{index},value:{value})")
-    print(f"dictKey:{kwargs.keys()}")
-    print(f"dictVal:{kwargs.values()}")
+    print(f"dictKey:{list(kwargs.keys())}")
+    print(f"dictVal:{list(kwargs.values())}")
 
 
 def CalculateAny(argument: Any) -> Any:
@@ -26,9 +27,11 @@ def CalculateAny(argument: Any) -> Any:
     @wraps(argument)
     def wrapper(*args, **kwargs):
         #same to wrapperDetail document
+        t1 = perf_counter()
         result = argument(*args, **kwargs)
-        executeTime = timeit(*args, globals=globals())
-        print(f"the running  time is:{executeTime} ms")
+        t0 = perf_counter()
+        executeTime = t0 - t1
+        print(f"the running  time is:{executeTime:6f} ms")
         print(type(argument))
         wrapperDetail(*args, **kwargs)
         return result
@@ -42,6 +45,7 @@ def setterAngel(angel: Union[int, float], increaseAngel: int = 1) -> float:
     if not isinstance(increaseAngel, int):
         raise TypeError('the increaseAngel must be integer')
 
+    # replace the lambda x:x+2
     def y(integer: int):
         return integer + 2
 
@@ -68,7 +72,7 @@ def ascii_dict() -> Dict[str, int]:
     return asciiDict
 
 
-def funcHelp(func: Callable[[NoReturn], NoReturn]):
+def funcHelp(func: Callable[[...], None]):
     print('\n')
     help(func)
     print(f"the function name is:{func.__name__}")
@@ -103,7 +107,7 @@ def repeatString(strLike: str) -> str:
     return strLike
 
 
-@repeat(times=30)
+@repeat(times=3, loop=True)
 def StringRepeat(strLink: str) -> None:
     print(f"the repeat string is:{repeatString(strLike=strLink)}")
 
@@ -141,23 +145,23 @@ def AsciiInfo() -> None:
     integerList = list(ascii_dict().values())
     AlphaList = list(ascii_dict().keys())
 
-    TupleAscii = (dict(zip(AlphaList[0:4], integerList[0:4])), dict(zip(AlphaList[4:8], integerList[4:8])),
+    tupleAscii = (dict(zip(AlphaList[0:4], integerList[0:4])), dict(zip(AlphaList[4:8], integerList[4:8])),
                   dict(zip(AlphaList[8:12], integerList[8:12])), dict(zip(AlphaList[12:16], integerList[12:16])),
                   dict(zip(AlphaList[16:20], integerList[16:20])), dict(zip(AlphaList[20:24], integerList[20:24])),
                   dict(zip(AlphaList[24:28], integerList[24:28]))
 
                   )
-    for i in range(len(TupleAscii)):
-        print(TupleAscii[i])
+    for i in range(len(tupleAscii)):
+        print(tupleAscii[i])
 
 
 def easyAdd(a: Union[float, int], b: Union[float, int]) -> float:
     return a + b
 
 
-def RepeatApp(a: Union[float, int], b: Union[float, int]) -> float:
-    Addnumber = DecoratorClass(times=28)(easyAdd)
-    print(f"the riddle method result is:{Addnumber(a, b)}")
+def RepeatApp(a: Union[float, int], b: Union[float, int]) -> None:
+    numberRes = DecoratorClass(times=28)(easyAdd)
+    print(f"the riddle method result is:{numberRes(a, b)}")
 
 
 def JojoSay(cls: Any) -> Any:
@@ -170,14 +174,14 @@ class Speak:
     def __init__(self, saying: str):
         self.speech = saying
 
-    def say(self, param) -> None:
+    def say(self, param: str) -> None:
         pass
 
 
 if __name__ == "__main__":
     print('-' * 12 + "using decorators" + '-' * 12)
     angels = CalculateAny(setterAngel)
-    print(f"the res is:{setterAngel(angel=10.2, increaseAngel=2)}")
+    print(f"the angel res is:{setterAngel(angel=10.2, increaseAngel=2):.4f}")
     print('-' * 12 + "using the functions" + '-' * 12)
     memory_argumentInfo = CalculateAny(GetterMemory)
     memory_argumentInfo()
@@ -186,6 +190,6 @@ if __name__ == "__main__":
     print('-' * 12 + 'decorator with class' + '-' * 12)
     AsciiInfo()
     RepeatApp(a=1, b=8)
-    print('-'*12+'monkey-patching'+'-'*12)
+    print('-' * 12 + 'monkey-patching' + '-' * 12)
     JoeStar = Speak("joseph joeStar")
     JoeStar.say('Zeppelin is my best friend')
