@@ -91,3 +91,6 @@ if __name__ == "__main__":
     #__str__
     print(f"the max value is:{max(nestedVal)}\nthe min value is:{min(nestedVal)}")
     #__lt__,__gt__
+    listPoints = list(pointSet)
+    for i in range(len(listPoints)):
+        print(listPoints[i])
