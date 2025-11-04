@@ -21,6 +21,8 @@
                     the claas of repeat() function,the output result is same of it
  ### decorator   JojoSay()
                  the monkey patch of decorator,it alaway output the string.
+ ##  TupleName.py
+                codes from some namedtuple methods and functions
 					
  
 				                                
