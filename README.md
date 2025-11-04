@@ -23,6 +23,13 @@
                  the monkey patch of decorator,it alaway output the string.
  ##  TupleName.py
                 codes from some namedtuple methods and functions
+
+# finally
+## functips-0.1-py3-none-any.whl
+   it packages form typingCheck.py and DecoratorsFunc.py,anyone can send to suegguestion 
+   and comment or tips same to it and so on...  make me the this packages be better nya~
+ 
+ 
 					
  
 				                                
