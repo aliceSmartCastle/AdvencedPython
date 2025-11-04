@@ -15,8 +15,13 @@
  ### decorator CalculateAny()
 								 it's output the function *arg,**kwarg
 								 infomation and funcrion running cost the time
- ### *decorator repeat()* repeat the string context or output the  counter of '*' in your running the function
- ### *decorator  DecoratorClass* the claas of repeat function
+ ### decorator  repeat() 
+                    repeat the string context or output the  counter of '*' in your running the function
+ ### decorator  DecoratorClass
+                    the claas of repeat() function,the output result is same of it
+ ### decorator   JojoSay()
+                 the monkey patch of decorator,it alaway output the string.
+					
  
 				                                
 				              
