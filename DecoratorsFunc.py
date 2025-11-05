@@ -1,25 +1,31 @@
 import math
 import os
 from functools import wraps
+from itertools import chain
 from time import perf_counter
 from typing import Any, Union, Callable, Dict
 
 import psutil
 
 
-def wrapperDetail(*args, **kwargs):
+def wrapperDetail(*args, **kwargs) ->Dict[str,Any]:
     """
      #TupleGenerics=TypeVar('TupleGenerics')\n
     param args:   Tuple[TupleGenerics]\n
     param kwargs: #**kwargs:Dict[Any,Any]\n
     return None
     """
+    index_list=[]
+    value_list=[]
 
-    print(f"len:{len(args)}")
     for index, value in enumerate(range(len(args))):
-        print(f"(index:{index},value:{args[value]})")
-    print(f"dictKey:{list(kwargs.keys())}")
-    print(f"dictVal:{list(kwargs.values())}")
+        #print(f"(index:{index},value:{args[value]})")
+        index_list.append(index)
+        value_list.append(args[value])
+    return {"len":len(args),'dictKey':tuple(kwargs.keys()),'dictVal':tuple(kwargs.values())
+             ,'index_kwargs':tuple(index_list),'value_kwargs':tuple(value_list)
+             }
+
 
 
 def CalculateAny(argument: Any) -> Any:
@@ -32,8 +38,8 @@ def CalculateAny(argument: Any) -> Any:
         t0 = perf_counter()
         executeTime = t0 - t1
         print(f"the running time is:{executeTime:6f} ms")
-        print(type(argument))
-        wrapperDetail(*args, **kwargs)
+        print(f"argument type is :{type(argument)}")
+        print(f"the function dictionary is :{wrapperDetail(*args, **kwargs)}")
         return result
 
     return wrapper
@@ -179,6 +185,25 @@ class Speak:
         pass
 
 
+def spiteLine(symbol: str = '*', context: str = '', counter: int = 12) -> str:
+    return f"{symbol * counter + context + symbol * counter}"
+
+
+def flatten(nested_list):
+    result_list = []
+    for item in nested_list:
+        if isinstance(item, list):
+            result_list.extend(flatten(item))
+        else:
+            result_list.append(item)
+    return result_list
+
+
+def flatten_res(nested_list:list):
+    return list(chain.from_iterable(
+        [flatten([nested_list]) if isinstance(nested_list, list) else [item_list] for item_list in nested_list]))
+
+
 if __name__ == "__main__":
     print('-' * 12 + "using decorators" + '-' * 12)
     angels = CalculateAny(setterAngel)
@@ -194,3 +219,6 @@ if __name__ == "__main__":
     print('-' * 12 + 'monkey-patching' + '-' * 12)
     JoeStar = Speak("joseph joeStar")
     JoeStar.say('Zeppelin is my best friend')
+    nestedList = [['welcome', 'to', 'new york'], ['big','city', 'you'], ['will', 'see', 'anything', ['given', 'idea']]]
+    m=flatten(nestedList)
+    print(m)
