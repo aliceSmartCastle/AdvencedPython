@@ -8,37 +8,28 @@ from typing import Any, Union, Callable, Dict
 import psutil
 
 
-def wrapperDetail(*args, **kwargs) ->Dict[str,Any]:
+def wrapperDetail(*args, **kwargs) -> Dict[str, Any]:
     """
      #TupleGenerics=TypeVar('TupleGenerics')\n
     param args:   Tuple[TupleGenerics]\n
     param kwargs: #**kwargs:Dict[Any,Any]\n
     return dict
-    *:arg maybe is the class
+    *:arg[0] maybe is the class,so I will initial to it,and on so,it has __dict__
     """
-
-    index_list=[]
-    args_list=[]
-
-
-
-
+    index_list = []
+    args_list = []
     for index, value in enumerate(range(len(args))):
         index_list.append(index)
-        if len(args) == 1:                                                              #class is first argument
-            cls=args[value]
-            args_list.append(cls.__dict__)                                           #args[value] is the class
+        if len(args) == 1:
+            #class is first argument
+            cls = args[value]
+            args_list.append(cls.__dict__)
+            #args[value] is the class
         else:
             args_list.extend(args[value])
-    #args_list=(arg for arg in range(len(args)))
+    return {"argLen": len(args), 'dictKey': tuple(kwargs.keys()), 'dictVal': tuple(kwargs.values()),
+            'argIndex': tuple(index_list), 'argVal': tuple(args_list)}
 
-
-
-
-
-
-    return {"argLen":len(args),'dictKey':tuple(kwargs.keys()),'dictVal':tuple(kwargs.values())
-             ,'argIndex':tuple(index_list),'argVal':tuple(args_list)}
 
 def CalculateAny(argument: Any) -> Any:
     # function document
@@ -50,8 +41,8 @@ def CalculateAny(argument: Any) -> Any:
         t0 = perf_counter()
         executeTime = t0 - t1
         print(f"the running time is:{executeTime:6f} ms")
-       # print(f"argument type is :{type(argument)}")
-       # default always is function type
+        # print(f"argument type is :{type(argument)}")
+        # default always is function type
         print(f"the function dictionary is :{wrapperDetail(*args, **kwargs)}")
         return result
 
@@ -97,11 +88,14 @@ def funcHelp(func: Callable[[None], None]):
     print(f"the function name is:{func.__name__}")
 
 
-def memoryHelp() -> None:
+def memoryHelp(memory_argumentInfo=None) -> None:
+    if memory_argumentInfo is None:
+        memory_argumentInfo = 0
     funcHelp(memory_argumentInfo)
 
-def spiteLine(symbol: str = '*', context: str = '', counter: int = 12) -> str:
-        return f"{symbol * counter + context + symbol * counter}"
+
+def spiteLine(*, context: str = '', symbol: str = '*', counter: int = 12) -> str:
+    return ''.join([symbol * counter, context, symbol * counter])
 
 
 def repeat(times: int, loop: bool = False) -> Any:
@@ -201,9 +195,6 @@ class Speak:
         pass
 
 
-
-
-
 def flatten(nested_list):
     result_list = []
     for item in nested_list:
@@ -214,26 +205,6 @@ def flatten(nested_list):
     return result_list
 
 
-def flatten_res(nested_list:list):
+def flatten_res(nested_list: list):
     return list(chain.from_iterable(
         [flatten([nested_list]) if isinstance(nested_list, list) else [item_list] for item_list in nested_list]))
-
-
-if __name__ == "__main__":
-    print(spiteLine(context= "using decorators"))
-    angels = CalculateAny(setterAngel)
-    print(f"the angel res is:{setterAngel(angel=10.2, increaseAngel=2):.4f}")
-    spiteLine(context= "using the functions")
-    memory_argumentInfo = CalculateAny(GetterMemory)
-    memory_argumentInfo()
-    print(spiteLine(context='decorator with arguments'))
-    StringRepeat(strLink="roland")
-    print(spiteLine( context= 'decorator with class'))
-    AsciiInfo()
-    RepeatApp(a=1, b=8)
-    print(spiteLine(context='monkey-patching'))
-    JoeStar = Speak("joseph joeStar")
-    JoeStar.say('Zeppelin is my best friend')
-    nestedList = [['welcome', 'to', 'new york'], ['big','city', 'you'], ['will', 'see', 'anything', ['given', 'idea']]]
-    m=flatten(nestedList)
-    print(m)
