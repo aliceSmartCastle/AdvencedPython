@@ -13,20 +13,13 @@ def wrapperDetail(*args, **kwargs) ->Dict[str,Any]:
      #TupleGenerics=TypeVar('TupleGenerics')\n
     param args:   Tuple[TupleGenerics]\n
     param kwargs: #**kwargs:Dict[Any,Any]\n
-    return None
+    return dict
     """
     index_list=[]
-    value_list=[]
-
     for index, value in enumerate(range(len(args))):
-        #print(f"(index:{index},value:{args[value]})")
-        index_list.append(index)
-        value_list.append(args[value])
-    return {"len":len(args),'dictKey':tuple(kwargs.keys()),'dictVal':tuple(kwargs.values())
-             ,'index_kwargs':tuple(index_list),'value_kwargs':tuple(value_list)
-             }
-
-
+        print(f"argValue is :{args[value]}")
+    return {"argLen":len(args),'dictKey':tuple(kwargs.keys()),'dictVal':tuple(kwargs.values())
+             ,'argIndex':tuple(index_list)}
 
 def CalculateAny(argument: Any) -> Any:
     # function document
@@ -86,6 +79,9 @@ def funcHelp(func: Callable[[None], None]):
 
 def memoryHelp() -> None:
     funcHelp(memory_argumentInfo)
+
+def spiteLine(symbol: str = '*', context: str = '', counter: int = 12) -> str:
+        return f"{symbol * counter + context + symbol * counter}"
 
 
 def repeat(times: int, loop: bool = False) -> Any:
@@ -185,8 +181,7 @@ class Speak:
         pass
 
 
-def spiteLine(symbol: str = '*', context: str = '', counter: int = 12) -> str:
-    return f"{symbol * counter + context + symbol * counter}"
+
 
 
 def flatten(nested_list):
@@ -205,18 +200,18 @@ def flatten_res(nested_list:list):
 
 
 if __name__ == "__main__":
-    print('-' * 12 + "using decorators" + '-' * 12)
+    print(spiteLine(context= "using decorators"))
     angels = CalculateAny(setterAngel)
     print(f"the angel res is:{setterAngel(angel=10.2, increaseAngel=2):.4f}")
-    print('-' * 12 + "using the functions" + '-' * 12)
+    spiteLine(context= "using the functions")
     memory_argumentInfo = CalculateAny(GetterMemory)
     memory_argumentInfo()
-    print('-' * 12 + 'decorator with arguments' + '-' * 12)
+    print(spiteLine(context='decorator with arguments'))
     StringRepeat(strLink="roland")
-    print('-' * 12 + 'decorator with class' + '-' * 12)
+    print(spiteLine( context= 'decorator with class'))
     AsciiInfo()
     RepeatApp(a=1, b=8)
-    print('-' * 12 + 'monkey-patching' + '-' * 12)
+    print(spiteLine(context='monkey-patching'))
     JoeStar = Speak("joseph joeStar")
     JoeStar.say('Zeppelin is my best friend')
     nestedList = [['welcome', 'to', 'new york'], ['big','city', 'you'], ['will', 'see', 'anything', ['given', 'idea']]]
