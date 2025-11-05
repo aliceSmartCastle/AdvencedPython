@@ -14,12 +14,31 @@ def wrapperDetail(*args, **kwargs) ->Dict[str,Any]:
     param args:   Tuple[TupleGenerics]\n
     param kwargs: #**kwargs:Dict[Any,Any]\n
     return dict
+    *:arg maybe is the class
     """
+
     index_list=[]
+    args_list=[]
+
+
+
+
     for index, value in enumerate(range(len(args))):
-        print(f"argValue is :{args[value]}")
+        index_list.append(index)
+        if len(args) == 1:                                                              #class is first argument
+            cls=args[value]
+            args_list.append(cls.__dict__)                                           #args[value] is the class
+        else:
+            args_list.extend(args[value])
+    #args_list=(arg for arg in range(len(args)))
+
+
+
+
+
+
     return {"argLen":len(args),'dictKey':tuple(kwargs.keys()),'dictVal':tuple(kwargs.values())
-             ,'argIndex':tuple(index_list)}
+             ,'argIndex':tuple(index_list),'argVal':tuple(args_list)}
 
 def CalculateAny(argument: Any) -> Any:
     # function document
@@ -31,7 +50,8 @@ def CalculateAny(argument: Any) -> Any:
         t0 = perf_counter()
         executeTime = t0 - t1
         print(f"the running time is:{executeTime:6f} ms")
-        print(f"argument type is :{type(argument)}")
+       # print(f"argument type is :{type(argument)}")
+       # default always is function type
         print(f"the function dictionary is :{wrapperDetail(*args, **kwargs)}")
         return result
 
