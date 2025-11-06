@@ -25,10 +25,17 @@ def wrapperDetail(*args, **kwargs) -> Dict[str, Any]:
             cls = args[value]
             args_list.append(cls.__dict__)
             #args[value] is the class
+
         else:
             args_list.extend(args[value])
     return {"argLen": len(args), 'dictKey': tuple(kwargs.keys()), 'dictVal': tuple(kwargs.values()),
             'argIndex': tuple(index_list), 'argVal': tuple(args_list)}
+
+
+def toTime(times):
+    return {'minute': times // 60,
+            'second': round(times, 6)
+            }
 
 
 def CalculateAny(argument: Any) -> Any:
@@ -40,7 +47,9 @@ def CalculateAny(argument: Any) -> Any:
         result = argument(*args, **kwargs)
         t0 = perf_counter()
         executeTime = t0 - t1
-        print(f"the running time is:{executeTime:6f} ms")
+        minutes = toTime(times=executeTime)
+
+        print(f"the running time is:{minutes}")
         # print(f"argument type is :{type(argument)}")
         # default always is function type
         print(f"the function dictionary is :{wrapperDetail(*args, **kwargs)}")
@@ -62,7 +71,7 @@ def setterAngel(angel: Union[int, float], increaseAngel: int = 1) -> float:
     return math.pow(math.cos(angel), y(integer=increaseAngel)) + math.pow(math.sin(angel), 2)
 
 
-def GetterMemory() -> None:
+def GetterMemory(processId=os.getpid()) -> None:
     """
     this function output the ram memory using of system\n
     Argument:
@@ -70,7 +79,7 @@ def GetterMemory() -> None:
     return:
           None
     """
-    ram = psutil.Process(os.getpid())
+    ram = psutil.Process(processId)
     print(f"the rss memory of system is :{ram.memory_info().rss / (math.pow(1024, 2)):4f}Mb")
     print(f"the vms memory of system is :{ram.memory_info().vms / (math.pow(1024, 2)):4f}Mb")
 
