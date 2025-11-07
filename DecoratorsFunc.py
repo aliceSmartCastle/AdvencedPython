@@ -33,8 +33,9 @@ def wrapperDetail(*args, **kwargs) -> Dict[str, Any]:
 
 
 def toTime(times):
-    return {'minute': times // 60,
-            'second': round(times, 6)
+    return {'minute': times//60,
+            'second': times//60,
+            'ms': times
             }
 
 
