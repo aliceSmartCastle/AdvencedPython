@@ -23,6 +23,8 @@
                  the monkey patch of decorator,it alaway output the string.
  ##  TupleName.py
                 codes from some namedtuple methods and functions
+## Filecontrol.py 
+          a simple File menagement of python cil tool 
 
 # finally
 ## functips-0.1-py3-none-any.whl
