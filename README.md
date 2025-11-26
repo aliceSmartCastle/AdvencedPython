@@ -25,6 +25,8 @@
                 codes from some namedtuple methods and functions
 ## Filecontrol.py 
           a simple File menagement of python cil tool 
+## createdesktop.py
+   this file can customized your want pyqt6 appication icon on ubuntu
 
 # finally
 ## functips-0.1-py3-none-any.whl
