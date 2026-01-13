@@ -14,7 +14,7 @@ class Equation:
     def __post_init__(self):
 
         if '(' not in self.left_expression() and len(self.solution_init()) == 2:
-         self.expreess_middle()
+         self.express_middle()
         if len(self.solution_init()) == 1:
             print(f"the function {self.__expression}\nis not solve")
             return None
@@ -46,7 +46,6 @@ class Equation:
 
     def expression_post(self):
         first_stage = self.left_expression().split('²')[0]
-        first_stage.startswith('-')
         if first_stage.startswith('-'):
             return self.left_expression()
         else:
@@ -93,8 +92,7 @@ class Equation:
             headStart, *headMiddle, test = split_expression
             return self.empty_expression(split_expression, headStart)
 
-    def expreess_middle(self):
-
+    def express_middle(self):
         if self.solution_init() != ['-','-','-']:
          start,*middle,self.__last = self.expression_post().split('+')
          if len(middle) == 1 and self.solution_init() == ['+', '-', '+']:
@@ -164,6 +162,7 @@ class Equation:
 
     def spical_expression(self):
         number_list=[]
+        assert len(self.left_expression()) >= 2 ,'the expression split length is less than 2'
         if self.left_expression().split('(')[1].startswith('x') and self.left_expression().split('(')[2].startswith('x'):
             for i in range(len(self.left_expression())):
                 if self.left_expression()[i].isdigit():
@@ -179,7 +178,7 @@ class Equation:
 
 
         if '(' not in self.left_expression() and len(self.solution_init()) == 3:
-          x1,x2 = self.formula(self.head_expression(),int(self.expreess_middle()),self.expreess_end())
+          x1,x2 = self.formula(self.head_expression(), int(self.express_middle()), self.expreess_end())
           print(self.string_result(x1,x2))
         elif len(self.solution_init()) == 1:
             pass
@@ -191,7 +190,7 @@ class Equation:
 
 def main():
 
-    questions = Equation('f(x)=2x²+9x+10', 'x')
+    questions = Equation('f(x)=8x²+12x+4', 'x')
     questions.solve()
 
 
