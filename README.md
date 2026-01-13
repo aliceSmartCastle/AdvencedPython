@@ -27,6 +27,8 @@
           a simple File menagement of python cil tool 
 ## createdesktop.py
    this file can customized your want pyqt6 appication icon on ubuntu
+## Quadratic.py
+   it can solve  f(x) = ax²+bx+c function nya ~~
 
 # finally
 ## functips-0.1-py3-none-any.whl
