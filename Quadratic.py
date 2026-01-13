@@ -100,7 +100,7 @@ class Equation:
          elif len(middle) == 2:
              return int(middle[1].split(self.__mathSymbol)[0])
          elif self.solution_init() == ['+', '-', '-']:
-             return int(self.__last.split(self.__mathSymbol)[1])
+             return int(self.__last.split(self.__mathSymbol)[1].split('²')[1])
          elif self.solution_init() == ['-', '-', '+']:
              return start.split(self.__mathSymbol)[1].split('²')[1]
          elif self.solution_init() == ['-', '+', '+']:
@@ -190,7 +190,7 @@ class Equation:
 
 def main():
 
-    questions = Equation('f(x)=8x²+12x+4', 'x')
+    questions = Equation('f(x)=4x²-10x+6', 'x')
     questions.solve()
 
 
