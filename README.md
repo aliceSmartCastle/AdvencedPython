@@ -28,7 +28,7 @@
 ## createdesktop.py
    this file can customized your want pyqt6 appication icon on ubuntu
 ## Quadratic.py
-   it can solve  f(x) = ax²+bx+c function,only  support the a,b,c all is integer nya ~~
+   it can solve  f(x) = ax²+bx+c function,only  support the a,b,c all is integer nya ~~,a can not equal to 0.
 
 # finally
 ## functips-0.1-py3-none-any.whl
